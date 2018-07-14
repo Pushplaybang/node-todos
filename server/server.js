@@ -50,7 +50,7 @@ app.patch('/todos/:id', (req, res) => {
     return res.status(404).send();
   }
 
-  const body = _.pick(req.bnody, ['text', 'completed']);
+  const body = _.pick(req.body, ['text', 'completed']);
 
   if (_.isBoolean(body.completed) && body.completed) {
     body.completedAt = Date.now();
