@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha server/**/*.test.js"
+    "test": "mocha server/**/*.test.js",
+    "test:watch": "nodemon --exec 'npm test'",
+    "start": "nodemon ./server/server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -20,7 +22,7 @@
     "eslint-plugin-react": "^7.10.0",
     "expect": "1.20.2",
     "mocha": "^5.2.0",
-    "nodemon": "^1.17.5",
+    "nodemon": "^1.18.2",
     "supertest": "^3.1.0"
   }
 }
