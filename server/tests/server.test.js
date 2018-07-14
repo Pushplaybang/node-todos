@@ -80,7 +80,27 @@ describe('GET /todos', () => {
 });
 
 describe('GET todos/:id', () => {
-  it('should get a specific todo by id');
+  it('should get a specific todo by id', (done) => {
+    request(app)
+      .get(`/todos/${initTodos[0]._id.toHexString()}`)
+      .expect(200)
+      .expect(res => expect(res.body.todo.text).toBe(initTodos[0].text))
+      .end(done);
+  });
+
+  it('should return 404 for non ObjectId', (done) => {
+    request(app)
+      .get(`/todos/${123}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it('should return 404 for if todo not found', (done) => {
+    request(app)
+      .get(`/todos/${new ObjectID()}`)
+      .expect(404)
+      .end(done);
+  });
 });
 
 describe('PUT todos/:id', () => {
