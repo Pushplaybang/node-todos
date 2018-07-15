@@ -8,6 +8,8 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./db/models/Todo');
 const { User } = require('./db/models/User');
 
+const { authenticate } = require('./middleware/authenticate');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -94,8 +96,27 @@ app.delete('/todos/:id', (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
+/**
+ * User Routes
+ */
+
+app.post('/users', (req, res) => {
+  const body = _.pick(req.body, ['email', 'password']);
+  const user = new User(body);
+
+  user
+    .save()
+    .then(() => user.generateAuthToken())
+    .then((token) => {
+      res.header('x-auth', token).send(user);
+    })
+    .catch(err => res.status(400).send(err));
+});
+
+app.get('/users/me', authenticate, (req, res) => res.send(req.user));
+
 app.listen(3000, () => {
-  console.log('api strarted running');
+  console.log('api started running'); // eslint-disable-line
 });
 
 module.exports = { app };
