@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('./db/mongoose');
+
 const { Todo } = require('./db/models/Todo');
 const { User } = require('./db/models/User');
 
@@ -11,8 +12,13 @@ const app = express();
 
 app.use(bodyParser.json());
 
+/**
+ * TODO Routes
+ */
+
 app.post('/todos', (req, res) => {
   const todo = new Todo({ text: req.body.text });
+
   todo
     .save()
     .then((doc) => {
@@ -72,6 +78,7 @@ app.patch('/todos/:id', (req, res) => {
 
 app.delete('/todos/:id', (req, res) => {
   const { id } = req.params;
+
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
