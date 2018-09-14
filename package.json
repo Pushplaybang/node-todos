@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha server/**/*.test.js",
     "test:watch": "nodemon --exec 'npm test'",
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js",
+    "start:db": "mongod"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
