@@ -4,9 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha server/**/*.test.js",
-    "test:watch": "nodemon --exec 'npm test'",
-    "start": "nodemon ./server/server.js",
+    "test": "export NODE_ENV=test || SET NODE_ENV=test && mocha server/**/*.test.js",
+    "test:watch": "nodemon --exec 'yarn test'",
+    "start": "npm-run-all --parallel start:db start:server",
+    "start:server": "nodemon ./server/server.js",
     "start:db": "mongod"
   },
   "dependencies": {
@@ -18,7 +19,8 @@
     "lodash": "^4.17.10",
     "mongodb": "^3.1.0",
     "mongoose": "^5.1.7",
-    "validator": "^10.4.0"
+    "validator": "^10.4.0",
+    "yarn-run-all": "^3.1.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

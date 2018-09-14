@@ -6,14 +6,14 @@ const authenticate = (req, res, next) => {
   return User.findByToken(token)
     .then((user) => {
       if (!user) {
-        return res.status(404).send();
+        return Promise.reject();
       }
 
       req.user = user;
       req.token = token;
       return next();
     })
-    .catch(err => res.status(401).send(err));
+    .catch(err => res.status(401).send());
 };
 
 module.exports = {
