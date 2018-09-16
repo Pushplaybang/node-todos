@@ -289,7 +289,7 @@ describe('POST /users', () => {
         email: 'and',
         password: '123'
       })
-      .expect(400)
+      .expect(403)
       .end(done);
   });
 
@@ -300,7 +300,7 @@ describe('POST /users', () => {
         email: initUsers[0].email,
         password: 'Password123!'
       })
-      .expect(400)
+      .expect(403)
       .end(done);
   });
 });
@@ -339,7 +339,7 @@ describe('POST /users/login', () => {
         email: initUsers[1].email,
         password: initUsers[1].password + '125438'
       })
-      .expect(400)
+      .expect(401)
       .expect((res) => {
         expect(res.headers['x-auth']).toNotExist();
       })

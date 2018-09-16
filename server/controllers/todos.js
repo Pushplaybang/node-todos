@@ -6,6 +6,7 @@ const { Todo } = require('./../db/models/Todo');
 class todoController {
 
   create(req, res) {
+    console.log(req);
     const todo = new Todo({
       text: req.body.text,
       _creator: req.user._id,
@@ -16,7 +17,7 @@ class todoController {
       .then((doc) => {
         res.send(doc);
       })
-      .catch(err => res.status(400).send(err));
+      .catch(err => res.status(400).send({ error: err}));
   }
 
   list(req, res) {

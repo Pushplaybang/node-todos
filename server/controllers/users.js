@@ -13,7 +13,11 @@ class userController {
       .then((token) => {
         res.header('x-auth', token).send(user);
       })
-      .catch(err => res.status(400).send(err));
+      .catch(err => res.status(403).send({
+        code: 403,
+        message: 'there was an error registering the account',
+        error: err,
+      }));
   }
 
   login(req, res) {
@@ -23,12 +27,13 @@ class userController {
       return user.generateAuthToken().then((token) => {
         res.header('x-auth', token).send(user);
       });
-    }).catch(() => {
-      res.status(400).send();
-    });
+    }).catch(err => res.status(err.code).send(err));
   }
 
   profile(req, res) {
+    if (!req.user) {
+      res.status(401).send();
+    }
     res.send(req.user);
   }
 

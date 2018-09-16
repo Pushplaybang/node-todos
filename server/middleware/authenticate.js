@@ -13,7 +13,11 @@ const authenticate = (req, res, next) => {
       req.token = token;
       return next();
     })
-    .catch(err => res.status(401).send());
+    .catch(err => res.status(401).send({
+      code: 401,
+      error: {},
+      message: 'not authenticated'
+    }));
 };
 
 module.exports = {

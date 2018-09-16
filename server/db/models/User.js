@@ -64,7 +64,7 @@ userSchema.methods.removeToken = function (token) {
 
   return user.update({
     $pull: {
-      tokens: { token }
+      tokens: { token },
     },
   });
 };
@@ -76,8 +76,12 @@ userSchema.statics.findByToken = function findByToken(token) {
 
   try {
     decoded = jwt.verify(token, 'supersecret');
-  } catch (error) {
-    return new Promise((resolve, reject) => reject(error));
+  } catch (err) {
+    return new Promise((resolve, reject) => reject({
+      code: 401,
+      error: err,
+      message: 'token verification failed',
+    }));
   }
 
   return User.findOne({
@@ -90,9 +94,21 @@ userSchema.statics.findByToken = function findByToken(token) {
 userSchema.statics.findByCredentials = function (email, password) {
   const User = this;
 
+  if (!email || !password) {
+    return Promise.reject({
+      code: 400,
+      error: {},
+      message: 'both email and password required',
+    });
+  }
+
   return User.findOne({email}).then((user) => {
     if (!user) {
-      return Promise.reject();
+      return Promise.reject({
+        code: 401,
+        error: {},
+        message: 'no user found, please register a new account',
+      });
     }
 
     return new Promise((resolve, reject) => {
@@ -101,7 +117,11 @@ userSchema.statics.findByCredentials = function (email, password) {
         if (res) {
           resolve(user);
         } else {
-          reject();
+          reject({
+            code: 401,
+            error: err,
+            message: 'password is incorrect',
+          });
         }
       });
     });
